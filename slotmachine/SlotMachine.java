@@ -45,7 +45,6 @@ public class SlotMachine {
     }
 
     private static String[] selectReels(int boardHeight, String[] reel, int position) {
-        position = 19;
         String[] boardReel = new String[boardHeight];
         for(int i = 0; i < boardHeight; i++){
             boardReel[i] = reel[(position + i) % reel.length];
