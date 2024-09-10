@@ -22,7 +22,7 @@ public class SlotMachine {
         List<String[]> slotFace = new ArrayList<>();
         int stopPos;
         for (String[] reel : bgReelsA) {
-            stopPos = rng.nextInt(reel.length); //   //[0, 8, 1, 19, 19] - to get win
+            stopPos = rng.nextInt(reel.length); //
             String[] slotFaceReel = selectReels(3, reel, stopPos);
             stopPosition.add(stopPos);
             slotFace.add(slotFaceReel);
@@ -45,20 +45,10 @@ public class SlotMachine {
     }
 
     private static String[] selectReels(int boardHeight, String[] reel, int position) {
+        position = 19;
         String[] boardReel = new String[boardHeight];
-        int overFlowCount = position + boardHeight - reel.length;
-        if (overFlowCount > 0) {
-            int fitAmount = boardHeight - overFlowCount;
-            for (int i = 0; i < fitAmount; i++) {
-                boardReel[i] = reel[position + i];
-            }
-
-            for (int i = 0; i < overFlowCount; i++) {
-                boardReel[fitAmount + i] = reel[i];
-            }
-
-        } else {
-            System.arraycopy(reel, position, boardReel, 0, boardHeight);
+        for(int i = 0; i < boardHeight; i++){
+            boardReel[i] = reel[(position + i) % reel.length];
         }
         return boardReel;
     }
