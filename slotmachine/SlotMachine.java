@@ -2,6 +2,7 @@ package slotmachine;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SlotMachine {
 
@@ -27,7 +28,8 @@ public class SlotMachine {
             stopPosition.add(stopPos);
             slotFace.add(slotFaceReel);
         }
-        System.out.println("Stop Positions:" + stopPosition);
+
+        System.out.println("Stop Positions:" + String.join("-", stopPosition.stream().map(x->x.toString()).collect(Collectors.toList())));
         System.out.println("Screen:");
 
 
@@ -88,7 +90,7 @@ public class SlotMachine {
 
         for (WinData win : winDataList) {
 
-            System.out.println("- Ways win " + win.getPosList() + ", " + win.getSymbolName() + " X" + win.getSymCountOnEachCol().size() + ", " + win.getWinAmount() + ", Ways: " + win.getWays());
+            System.out.println("- Ways win " + String.join("-",win.getPosList().stream().map(x->x.toString()).collect(Collectors.toList())) + ", " + win.getSymbolName() + " X" + win.getSymCountOnEachCol().size() + ", " + win.getWinAmount() + ", Ways: " + win.getWays());
         }
 
     }
