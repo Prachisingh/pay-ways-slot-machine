@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 public class GameConfiguration {
-     static int stake = 1;
      static int boardHeight = 3;
     static int boardWidth = 5;
 

@@ -9,6 +9,12 @@ import static slotmachine.GameConfiguration.*;
 public class SlotMachine {
 
     public static void main(String[] args) {
+        play(1);
+
+
+    }
+
+    public static List<WinData> play(int stake) {
         List<Integer> stopPosition = new ArrayList<>();
 
         Random rng = new Random();
@@ -21,21 +27,20 @@ public class SlotMachine {
             slotFace.add(slotFaceReel);
         }
 
-        System.out.println("Stop Positions:" + stopPosition.stream().map(Object::toString).collect(Collectors.joining("-")));
-        System.out.println("Screen:");
+//        System.out.println("Stop Positions:" + stopPosition.stream().map(Object::toString).collect(Collectors.joining("-")));
+//        System.out.println("Screen:");
 
 
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 5; col++) {
+//        for (int row = 0; row < 3; row++) {
+//            for (int col = 0; col < 5; col++) {
+//
+//                System.out.print(" " + slotFace.get(col)[row]);
+//            }
+//            System.out.println();
+//        }
 
-                System.out.print(" " + slotFace.get(col)[row]);
-            }
-            System.out.println();
-        }
-
-        calculateWin(slotFace, stake, boardHeight, boardWidth);
-
-
+        List<WinData> winDataList = calculateWin(slotFace, stake, boardHeight, boardWidth);
+        return winDataList;
     }
 
     private static String[] selectReels(int boardHeight, String[] reel, int position) {
@@ -46,7 +51,7 @@ public class SlotMachine {
         return boardReel;
     }
 
-    private static void calculateWin(List<String[]> slotFace, int stake, int boardHeight, int boardWidth) {
+    private static List<WinData> calculateWin(List<String[]> slotFace, int stake, int boardHeight, int boardWidth) {
         BigDecimal totalWin = BigDecimal.ZERO;
         List<WinData> winDataList = new ArrayList<>();
 
@@ -64,13 +69,14 @@ public class SlotMachine {
                 totalWin = totalWin.add(winData.getWinAmount());
             }
         }
-        System.out.println("Total wins:" + totalWin);
+//        System.out.println("Total wins:" + totalWin);
 
         for (WinData win : winDataList) {
 
-            System.out.println("- Ways win " + win.getPosList().stream().map(Object::toString).collect(Collectors.joining("-")) + ", " + win.getSymbolName() + " X" + win.getSymCountOnEachCol().size() + ", " + win.getWinAmount() + ", Ways: " + win.getWays());
+//            System.out.println("- Ways win " + win.getPosList().stream().map(Object::toString).collect(Collectors.joining("-")) + ", " + win.getSymbolName() + " X" + win.getSymCountOnEachCol().size() + ", " + win.getWinAmount() + ", Ways: " + win.getWays());
         }
 
+        return winDataList;
     }
 
     private static void populateWin(WinData winData, List<WinData> winDataList, int stake) {
