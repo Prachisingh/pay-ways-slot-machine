@@ -9,9 +9,8 @@ import static slotmachine.GameConfiguration.*;
 public class SlotMachine {
 
     public static void main(String[] args) {
-        play(1);
-
-
+        int stake = 1;
+        play(stake);
     }
 
     public static List<WinData> play(int stake) {

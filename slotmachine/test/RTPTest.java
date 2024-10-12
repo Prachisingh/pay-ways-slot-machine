@@ -13,16 +13,15 @@ public class RTPTest {
     static int runs = 1000_000_0;
 
 
-
     public static void main(String[] args) {
         ExecutorService executorService;
         int numOfAvailableThreads = Runtime.getRuntime().availableProcessors();
         System.out.println("available number of threads =  " + numOfAvailableThreads);
 
         executorService = Executors.newFixedThreadPool(numOfAvailableThreads);
-         int stake1 = 1;
-         int stake2 = 2;
-         int stake3 = 3;
+        int stake1 = 1;
+        int stake2 = 2;
+        int stake3 = 3;
         executorService.submit(() -> playGame(stake1));
         executorService.submit(() -> playGame(stake2));
         executorService.submit(() -> playGame(stake3));
