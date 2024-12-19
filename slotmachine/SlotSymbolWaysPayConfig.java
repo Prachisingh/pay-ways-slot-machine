@@ -1,13 +1,14 @@
 package slotmachine;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
 
 
 public class SlotSymbolWaysPayConfig {
 
     private int minimumMatch;
-
+    private HashSet<String> wilds;
     private List<BigDecimal> winAmounts;
 
     public BigDecimal getWinAmount(int matchedColumnsCount) {
@@ -31,4 +32,19 @@ public class SlotSymbolWaysPayConfig {
         this.winAmounts = winAmounts;
     }
 
+    public SlotSymbolWaysPayConfig addWild(String wildSymbolId) {
+        if(wilds == null) wilds = new HashSet<>();
+
+        wilds.add(wildSymbolId);
+
+        return this;
+    }
+
+    public HashSet<String> getWilds() {
+        return wilds;
+    }
+
+    public void setWilds(HashSet<String> wilds) {
+        this.wilds = wilds;
+    }
 }

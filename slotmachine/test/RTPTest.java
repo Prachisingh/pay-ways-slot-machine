@@ -5,29 +5,42 @@ import slotmachine.WinData;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class RTPTest {
 
-    static int runs = 1000_000_0;
+    static int runs = 1000_000;
+    static int finishedCount = 0;
+    static long startingTime ;
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         ExecutorService executorService;
         int numOfAvailableThreads = Runtime.getRuntime().availableProcessors();
         System.out.println("available number of threads =  " + numOfAvailableThreads);
-
+        startingTime = System.currentTimeMillis();
         executorService = Executors.newFixedThreadPool(numOfAvailableThreads);
         int stake1 = 1;
         int stake2 = 2;
         int stake3 = 3;
-        executorService.submit(() -> playGame(stake1));
-        executorService.submit(() -> playGame(stake2));
-        executorService.submit(() -> playGame(stake3));
+
+        CountDownLatch countDownLatch = new CountDownLatch(3);
+
+
+        executorService.submit(() -> playGame(stake1, countDownLatch));
+        executorService.submit(() -> playGame(stake2, countDownLatch));
+        executorService.submit(() -> playGame(stake3, countDownLatch));
+        executorService.shutdown();
+        countDownLatch.await();
+        long timeTakes = System.currentTimeMillis() - startingTime;
+        System.out.println("Over all Time taken by thread " + timeTakes);
+
     }
 
-    private static void playGame(int stake) {
+    private static void playGame(int stake, CountDownLatch latch) {
+        long time = System.currentTimeMillis();
         BigDecimal totalWin = BigDecimal.ZERO;
         for (int i = 0; i < runs; i++) {
             List<WinData> roundWin = SlotMachine.play(stake);
@@ -36,7 +49,19 @@ public class RTPTest {
             }
         }
         int totalStake = stake * runs;
+       long timeTakes =  System.currentTimeMillis() - time;
+        System.out.println("time taken : " + timeTakes );
         BigDecimal rtp = totalWin.divide(BigDecimal.valueOf(totalStake));
         System.out.println("RTP is " + rtp);
+//        finished();
+        latch.countDown();
+    }
+
+    private static synchronized  void finished(){
+        finishedCount++;
+        if(finishedCount == 3){
+            long timeTakes = System.currentTimeMillis() - startingTime;
+            System.out.println("Over all Time taken by thread " + timeTakes);
+        }
     }
 }

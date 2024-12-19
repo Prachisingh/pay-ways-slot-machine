@@ -25,18 +25,20 @@ public class SlotMachine {
             stopPosition.add(stopPos);
             slotFace.add(slotFaceReel);
         }
-
-//        System.out.println("Stop Positions:" + stopPosition.stream().map(Object::toString).collect(Collectors.joining("-")));
-//        System.out.println("Screen:");
+        // 0-6-27-10-3
 
 
-//        for (int row = 0; row < 3; row++) {
-//            for (int col = 0; col < 5; col++) {
-//
-//                System.out.print(" " + slotFace.get(col)[row]);
-//            }
-//            System.out.println();
-//        }
+        //System.out.println("Stop Positions:" + stopPosition.stream().map(Object::toString).collect(Collectors.joining("-")));
+        //System.out.println("Screen:");
+
+
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 5; col++) {
+
+                //System.out.print(" " + slotFace.get(col)[row]);
+            }
+            //System.out.println();
+        }
 
         List<WinData> winDataList = calculateWin(slotFace, stake, boardHeight, boardWidth);
         return winDataList;
@@ -68,11 +70,11 @@ public class SlotMachine {
                 totalWin = totalWin.add(winData.getWinAmount());
             }
         }
-//        System.out.println("Total wins:" + totalWin);
+        //System.out.println("Total wins:" + totalWin);
 
         for (WinData win : winDataList) {
 
-//            System.out.println("- Ways win " + win.getPosList().stream().map(Object::toString).collect(Collectors.joining("-")) + ", " + win.getSymbolName() + " X" + win.getSymCountOnEachCol().size() + ", " + win.getWinAmount() + ", Ways: " + win.getWays());
+            //System.out.println("- Ways win " + win.getPosList().stream().map(Object::toString).collect(Collectors.joining("-")) + ", " + win.getSymbolName() + " X" + win.getSymCountOnEachCol().size() + ", " + win.getWinAmount() + ", Ways: " + win.getWays());
         }
 
         return winDataList;
@@ -98,7 +100,7 @@ public class SlotMachine {
     }
 
     private static WinData checkForWinCombination(String symToCompare, int boardHeight, int boardWidth, List<String[]> slotFace) {
-
+        SlotSymbolWaysPayConfig payOut = GameConfiguration.getPayout().get(symToCompare);
         WinData winData = new WinData();
         List<Integer> posList = new ArrayList<>();
         Map<Integer, Integer> symCountPerColMap = new HashMap<>();
@@ -112,7 +114,7 @@ public class SlotMachine {
             for (int row = 0; row < boardHeight; row++) {
                 String currentSym = slotFace.get(col)[row];
 
-                if (symToCompare.equals(currentSym)) {
+                if (symToCompare.equals(currentSym) || payOut.getWilds().contains(currentSym)) {
 
                     symCountPerColumn++;
                     symCountPerColMap.put(col, symCountPerColumn);
