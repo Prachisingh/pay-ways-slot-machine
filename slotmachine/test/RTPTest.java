@@ -4,6 +4,7 @@ import slotmachine.SlotMachine;
 import slotmachine.WinData;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -14,6 +15,7 @@ public class RTPTest {
     static int runs = 1000_000;
     static int finishedCount = 0;
     static long startingTime ;
+
 
 
     public static void main(String[] args) throws InterruptedException {
@@ -41,18 +43,25 @@ public class RTPTest {
 
     private static void playGame(int stake, CountDownLatch latch) {
         long time = System.currentTimeMillis();
+        List<WinData> roundWin = new ArrayList<>();
+        BigDecimal baseGameWinCounter = BigDecimal.ZERO;
         BigDecimal totalWin = BigDecimal.ZERO;
         for (int i = 0; i < runs; i++) {
-            List<WinData> roundWin = SlotMachine.play(stake);
+             roundWin = SlotMachine.play(stake);
             for (WinData win : roundWin) {
                 totalWin = totalWin.add(win.getWinAmount());
             }
+            if(!roundWin.isEmpty()){
+               baseGameWinCounter =  baseGameWinCounter.add(BigDecimal.ONE);
+            }
+
         }
         int totalStake = stake * runs;
        long timeTakes =  System.currentTimeMillis() - time;
         System.out.println("time taken : " + timeTakes );
         BigDecimal rtp = totalWin.divide(BigDecimal.valueOf(totalStake));
-        System.out.println("RTP is " + rtp);
+        System.out.println("RTP is " + rtp.multiply(BigDecimal.valueOf(10)) + "%");
+        System.out.println("BaseGameHitRate : " + baseGameWinCounter.divide(BigDecimal.valueOf(runs)));
 //        finished();
         latch.countDown();
     }

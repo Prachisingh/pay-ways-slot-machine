@@ -19,7 +19,8 @@ public class SlotMachine {
         Random rng = new Random();
         List<String[]> slotFace = new ArrayList<>();
         int stopPos;
-        for (String[] reel : GameConfiguration.getReelSets()) {
+        List<String[]> bgReelsA = GameConfiguration.getReelSets().get(0);
+        for (String[] reel :bgReelsA) {
             stopPos = rng.nextInt(reel.length); //
             String[] slotFaceReel = selectReels(boardHeight, reel, stopPos);
             stopPosition.add(stopPos);
